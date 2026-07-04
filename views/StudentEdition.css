@@ -1,0 +1,32 @@
+/* src/views/StudentEdition.css */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap");
+
+.page-bg {
+    min-height: calc(100vh - 48px);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 16px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.page-breadcrumb {
+    color: #fffff0;
+    font-weight: 600;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.noto-sans,
+.noto-sans * {
+    font-family: "Noto Sans JP", sans-serif !important;
+}

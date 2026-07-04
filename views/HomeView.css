@@ -1,0 +1,286 @@
+/* src/views/HomeView.css */
+/* Niconneフォントはsrc/index.cssで既に読み込み済みのためここでは@importしない */
+
+.home {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.home-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    background-color: #fffef7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.home-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.login-btn-desktop {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #ed6c02;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.home-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 16px 64px;
+}
+
+.search-row {
+    max-width: 520px;
+    margin: 0 auto 28px;
+    position: relative;
+}
+
+.card-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    transition: opacity 0.15s ease;
+}
+
+@media (max-width: 1100px) {
+    .card-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .home-nav {
+        justify-content: flex-start;
+        padding: 8px 16px;
+    }
+
+    .login-btn-desktop {
+        display: none;
+    }
+
+    .home-main {
+        padding: 20px 16px 48px;
+    }
+
+    .card-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pager-row-desktop {
+        display: none;
+    }
+
+    .glass-card {
+        min-height: 28.5vh;
+    }
+}
+
+.card-row--loading {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    padding: 40px 0;
+}
+
+.glass-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 330px;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.33);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.glass-card.is-burgundy {
+    background: rgba(128, 0, 32, 0.42);
+}
+
+.glass-card.is-naples {
+    background: rgba(246, 201, 28, 0.42);
+}
+
+.glass-card.is-cadmium {
+    background: rgba(13, 92, 51, 0.42);
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #7f0020 320deg, #c0405f 350deg, #7f0020 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.glass-card.is-naples::before {
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #b8860b 320deg, #f6c91c 350deg, #b8860b 360deg);
+}
+
+.glass-card.is-cadmium::before {
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #0d5c33 320deg, #2ecc71 350deg, #0d5c33 360deg);
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+    animation: rotate-border 2s linear infinite;
+}
+
+@keyframes rotate-border {
+    to {
+        --angle: 360deg;
+    }
+}
+
+.glass-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.song-name {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.66);
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.song-name:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.score-btn {
+    align-self: flex-end;
+    margin-top: 12px;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.66);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.score-btn:hover {
+    transform: scale(1.2);
+    opacity: 0.85;
+}
+
+.pager-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.page-info {
+    font-size: 12px;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.pager-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 2px 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* MUI Pagination の内部クラスを直接指定(:deep不要、素のCSSなのでそのまま届く) */
+.pager-glass .MuiPaginationItem-root {
+    color: #353542;
+    font-weight: 600;
+}
+
+.pager-glass .MuiPaginationItem-root.Mui-selected {
+    background-color: #800020 !important;
+    color: #fff !important;
+}
+
+.hint-verse {
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fffff0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.effect-shine {
+    font-size: 2.2rem;
+    /* HomeView内はサイズだけ上書き(基本スタイルはindex.cssのグローバル定義を継承) */
+}
+
+.search-row::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 999px;
+    padding: 3px;
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #800020 320deg, #c0405f 350deg, #800020 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.search-row.search-loading::before {
+    opacity: 1;
+    animation: rotate-border 3300ms linear infinite;
+}

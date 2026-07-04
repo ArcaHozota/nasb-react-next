@@ -1,0 +1,58 @@
+/* src/views/RandomFive.css */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap");
+
+.noto-serif,
+.noto-serif * {
+    font-family: "Noto Serif JP", serif !important;
+}
+
+.page-bg {
+    min-height: calc(100vh - 48px);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 16px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.glass-table {
+    width: 100%;
+    background: transparent;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    font-family: "Noto Serif JP", serif;
+}
+
+.glass-table caption {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+    padding-bottom: 4px;
+}
+
+.header-row-mint th {
+    background: rgba(168, 230, 196, 0.5);
+    padding: 8px;
+}
+
+.body-row-glass td {
+    background: rgba(255, 255, 255, 0.33);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px;
+}
+
+.record-link {
+    color: #006b3c;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.record-link:hover {
+    text-decoration: underline;
+}
