@@ -28,7 +28,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
-import { utf8ToBase64 } from "@/constants";
+import { extractErrorMessage, utf8ToBase64 } from "@/constants";
 import bgImage from "@/assets/mainmenu-bg2.webp";
 import "./HymnList.css";
 
@@ -113,8 +113,8 @@ export default function HymnList() {
   const onDelete = async (item: HymnRow) => {
     try {
       await api.get(`/hymns/delete-check?id=${item.id}`);
-    } catch (e: any) {
-      toast(e.response?.data?.message ?? "削除できません");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "削除できません"));
       return;
     }
     const ok = await confirm(
@@ -126,8 +126,8 @@ export default function HymnList() {
       const { data } = await api.delete(`/hymns/info-delete?id=${item.id}`);
       toast(data.message ?? "削除しました");
       queryClient.invalidateQueries({ queryKey: ["hymns-list"] });
-    } catch (e: any) {
-      toast(e.response?.data ?? "削除に失敗しました");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "削除に失敗しました"));
     }
   };
 
@@ -144,10 +144,8 @@ export default function HymnList() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-    } catch (e: any) {
-      const msg = e.response?.data
-        ? await e.response.data.text()
-        : "楽譜の取得に失敗しました";
+    } catch (e: unknown) {
+      const msg = extractErrorMessage(e, "楽譜の取得に失敗しました");
       router.push(`/error?errMsg=${encodeURIComponent(utf8ToBase64(msg))}`);
     }
   };

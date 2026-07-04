@@ -23,6 +23,7 @@ import { useFeedbackStore } from "@/stores/feedbackStore";
 import { useAuthStore } from "@/stores/authStore";
 import bgImage from "@/assets/mainmenu-bg2.webp";
 import "./HymnForm.css";
+import { extractErrorMessage } from "@/constants";
 
 type FormState = {
   id: string | null;
@@ -47,13 +48,13 @@ const emptyForm: FormState = {
 };
 
 // バックエンドの { status, message } / 旧仕様の文字列レスポンス、両対応
-const extractErrorMessage = (e: any, fallback: string) => {
-  const data = e?.response?.data;
-  if (!data) return fallback;
-  if (typeof data === "string") return data;
-  if (typeof data === "object" && data.message) return data.message;
-  return fallback;
-};
+// const extractErrorMessage = (e: any, fallback: string) => {
+//   const data = e?.response?.data;
+//   if (!data) return fallback;
+//   if (typeof data === "string") return data;
+//   if (typeof data === "object" && data.message) return data.message;
+//   return fallback;
+// };
 
 const required = (v: string) =>
   !!v && v.trim() !== "" ? "" : "上記の入力ボックスを空になってはいけません。";
