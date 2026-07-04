@@ -20,6 +20,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg2.webp";
 import "./HymnScore.css";
+import { extractErrorMessage } from "@/constants";
 
 export default function HymnScore() {
   const router = useRouter();
@@ -65,8 +66,8 @@ export default function HymnScore() {
       const { data } = await api.post("/hymns/score-upload", formData);
       toast(typeof data === "string" ? data : "アップロードしました");
       router.push(`/hymns?${buildListQuery()}`);
-    } catch (e: any) {
-      toast(e.response?.data ?? "通信エラーが発生しました。");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "通信エラーが発生しました。"));
     } finally {
       setUploading(false);
     }

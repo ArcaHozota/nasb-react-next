@@ -17,6 +17,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg3.webp";
 import "./RandomFive.css";
+import { extractErrorMessage } from "@/constants";
 
 type Record = { id?: number; nameJp: string; nameKr: string; link: string };
 
@@ -35,8 +36,8 @@ export default function RandomFive() {
         params: { keyword: keyword.normalize("NFC") },
       });
       setRecords(data);
-    } catch (e: any) {
-      toast(e.response?.data?.message ?? "通信エラー");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "通信エラー"));
     } finally {
       setLoading(false);
     }
@@ -49,8 +50,8 @@ export default function RandomFive() {
         params: { keyword: kw.normalize("NFC") },
       });
       setRecords(data);
-    } catch (e: any) {
-      toast(e.response?.data?.message ?? "通信エラー");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "通信エラー"));
     } finally {
       setLoading(false);
     }
