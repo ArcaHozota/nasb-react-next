@@ -1,6 +1,8 @@
 // src/constants.ts
 export const DELAY_APOLOGY = "すみませんが、当機能はまだ実装されておりません";
 
+export const EMPTY_STRING = "";
+
 export const utf8ToBase64 = (str: string): string => {
   const bytes = new TextEncoder().encode(str);
   const binString = Array.from(bytes, (b) => String.fromCharCode(b)).join("");
@@ -14,10 +16,12 @@ export const base64ToUtf8 = (str: string): string => {
 };
 
 // 例: utils/errorMessage.ts
-export const extractErrorMessage = (e: any, fallback: string) => {
-  const data = e?.response?.data;
+import type { AxiosError } from "axios";
+
+export const extractErrorMessage = (e: unknown, fallback: string): string => {
+  const data = (e as AxiosError<unknown>)?.response?.data;
   if (typeof data === "string") return data;
   if (data && typeof data === "object" && "message" in data)
-    return data.message;
+    return String((data as { message: unknown }).message);
   return fallback;
 };

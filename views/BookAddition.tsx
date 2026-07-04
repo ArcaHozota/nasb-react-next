@@ -21,6 +21,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg.webp";
 import "./BookAddition.css";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 type BookOrChapter = { id: number; name: string };
 
@@ -51,15 +52,15 @@ export default function BookAddition() {
         const { data } = await api.get("/books/get-books");
         setBooks(data);
         if (data.length) setBookId(data[0].id);
-      } catch (e: any) {
-        toast(e.response?.data ?? "書の取得に失敗しました");
+      } catch (e: unknown) {
+        toast(extractErrorMessage(e, "書の取得に失敗しました"));
       }
     })();
   }, [toast]);
 
   // 書が変わったら章を取り直す(連動の核心)
   useEffect(() => {
-    setChapterId("");
+    setChapterId(EMPTY_STRING);
     setChapters([]);
     if (!bookId) return;
     (async () => {
@@ -70,8 +71,8 @@ export default function BookAddition() {
         });
         setChapters(data);
         if (data.length) setChapterId(data[0].id);
-      } catch (e: any) {
-        toast(e.response?.data ?? "章の取得に失敗しました");
+      } catch (e: unknown) {
+        toast(extractErrorMessage(e, "章の取得に失敗しました"));
       } finally {
         setChapterLoading(false);
       }
@@ -103,8 +104,8 @@ export default function BookAddition() {
       setTextEn("");
       setTextJp("");
       setErrors({ textEn: false, textJp: false, phraseId: false });
-    } catch (e: any) {
-      toast(e.response?.data ?? "保存に失敗しました");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "保存に失敗しました"));
     } finally {
       setSaving(false);
     }

@@ -9,6 +9,8 @@ import {
   type KeyboardEvent,
 } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import type { AxiosError } from "axios";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import {
   useMediaQuery,
@@ -87,7 +89,8 @@ export default function HomeView() {
 
   useEffect(() => {
     if (error) {
-      const msg = (error as any)?.response?.data ?? "通信エラー";
+      const msg =
+        (error as AxiosError<string>)?.response?.data ?? "通信エラー";
       toast(msg);
     }
   }, [error, toast]);
@@ -119,7 +122,7 @@ export default function HomeView() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast(extractErrorMessage(e, "楽譜の取得に失敗しました"));
     }
   };
@@ -173,7 +176,7 @@ export default function HomeView() {
     <div className="home" style={{ backgroundImage: `url(${currentBg})` }}>
       <header className="home-nav">
         <div className="home-brand" onClick={reload}>
-          <img src={brandLogo} alt="NASB1995" width={66} height={66} />
+          <Image src={brandLogo} alt="NASB1995" width={66} height={66} />
           <span className="effect-shine">NASB1995</span>
         </div>
         <button className="login-btn-desktop" onClick={goLogin}>
@@ -263,8 +266,8 @@ export default function HomeView() {
 
         {isMobile && (
           <p className="hint-verse">
-            "Heaven and Earth will pass away, but My words will not pass away."
-            --- Luke 21:33
+            &ldquo;Heaven and Earth will pass away, but My words will not pass
+            away.&rdquo; --- Luke 21:33
           </p>
         )}
       </main>
