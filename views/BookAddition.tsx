@@ -248,7 +248,7 @@ export default function BookAddition() {
               <Button
                 fullWidth
                 variant="contained"
-                color="error"
+                color="secondary"
                 className="noto-serif"
                 sx={{ height: 40 }}
                 disabled={saving}
