@@ -94,8 +94,8 @@ export default function StudentEdition() {
         dateOfBirth: toDateInputValue(data.dateOfBirth),
         email: data.email,
       }));
-    } catch (e: any) {
-      toast(e.response?.data ?? "データの取得に失敗しました");
+    } catch (e: unknown) {
+      toast(extractErrorMessage(e, "データの取得に失敗しました"));
     }
   };
 
@@ -112,7 +112,7 @@ export default function StudentEdition() {
       await api.get("/students/check-duplicated", {
         params: { id: form.id ?? "", loginAccount: name },
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       setErrors((er) => ({
         ...er,
         loginAccount: extractErrorMessage(
@@ -148,7 +148,7 @@ export default function StudentEdition() {
       });
       toast(typeof data === "string" ? data : "更新しました");
       router.push("/mainmenu");
-    } catch (e: any) {
+    } catch (e: unknown) {
       toast(extractErrorMessage(e, "更新に失敗しました"));
     } finally {
       setSaving(false);
