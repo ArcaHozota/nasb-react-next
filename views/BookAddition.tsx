@@ -113,7 +113,7 @@ export default function BookAddition() {
   };
 
   return (
-    <Box className="page-bg" sx={{ position: "relative" }}>
+    <Box className="page-bg" sx={{ position: "relative", zIndex: 0 }}>
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}

@@ -173,7 +173,7 @@ export default function HomeView() {
   };
 
   return (
-    <div className="home" style={{ position: "relative" }}>
+    <div className="home" style={{ position: "relative", zIndex: 0 }}>
       <div style={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={currentBg}

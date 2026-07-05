@@ -58,6 +58,7 @@ export default function LoginView() {
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
+        zIndex: 0,
       }}
     >
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
