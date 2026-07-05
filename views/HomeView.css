@@ -85,10 +85,6 @@
     .pager-row-desktop {
         display: none;
     }
-
-    .glass-card {
-        min-height: 21vh;
-    }
 }
 
 .card-row--loading {
@@ -131,6 +127,12 @@
 
 .glass-card.is-cadmium {
     background: rgba(13, 92, 51, 0.42);
+}
+
+@media (max-width: 700px) {
+    .glass-card {
+        min-height: 28.5vh;
+    }
 }
 
 @property --angle {
