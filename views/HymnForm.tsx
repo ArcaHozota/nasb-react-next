@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect, type FocusEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NextLink from "next/link";
+import Image from "next/image";
 import {
   Box,
   Card,
@@ -206,10 +207,16 @@ export default function HymnForm() {
   };
 
   return (
-    <Box
-      className="page-bg noto-sans"
-      sx={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <Box className="page-bg noto-sans" sx={{ position: "relative" }}>
+      <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
+        <Image
+          src={bgImage}
+          alt=""
+          fill
+          priority
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
       <Breadcrumbs className="page-breadcrumb" sx={{ px: 0 }}>
         <Link
           component={NextLink}

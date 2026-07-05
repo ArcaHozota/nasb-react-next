@@ -3,6 +3,7 @@
 // src/views/MainMenu.tsx
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image, { type StaticImageData } from "next/image";
 import { Box, Grid, Card, Typography } from "@mui/material";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import { DELAY_APOLOGY } from "@/constants";
@@ -14,7 +15,7 @@ type MenuCard = {
   key: string;
   title: string;
   color: string;
-  img: string;
+  img: StaticImageData;
   action: () => void;
 };
 
@@ -71,14 +72,11 @@ export default function MainMenu() {
                 height: "66vh",
               }}
             >
-              <Box
-                component="img"
+              <Image
                 src={card.img}
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
+                alt={card.title}
+                fill
+                style={{ objectFit: "cover" }}
               />
               <Box
                 sx={{

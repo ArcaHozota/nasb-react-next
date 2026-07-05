@@ -3,6 +3,7 @@
 // src/views/LoginView.tsx
 import { useState, useEffect, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Box,
   Card,
@@ -56,12 +57,18 @@ export default function LoginView() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
+        position: "relative",
       }}
     >
+      <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
+        <Image
+          src={bgImage}
+          alt=""
+          fill
+          priority
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
       <Card
         sx={{
           width: 360,

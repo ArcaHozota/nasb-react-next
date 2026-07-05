@@ -173,7 +173,16 @@ export default function HomeView() {
   };
 
   return (
-    <div className="home" style={{ backgroundImage: `url(${currentBg})` }}>
+    <div className="home" style={{ position: "relative" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: -1 }}>
+        <Image
+          src={currentBg}
+          alt=""
+          fill
+          priority
+          style={{ objectFit: "cover" }}
+        />
+      </div>
       <header className="home-nav">
         <div className="home-brand" onClick={reload}>
           <Image src={brandLogo} alt="NASB1995" width={66} height={66} />

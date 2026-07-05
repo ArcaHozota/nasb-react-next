@@ -2,6 +2,7 @@
 
 // src/views/BookAddition.tsx
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Box,
   Card,
@@ -112,7 +113,16 @@ export default function BookAddition() {
   };
 
   return (
-    <Box className="page-bg" sx={{ backgroundImage: `url(${bgImage})` }}>
+    <Box className="page-bg" sx={{ position: "relative" }}>
+      <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
+        <Image
+          src={bgImage}
+          alt=""
+          fill
+          priority
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
       <Card className="mt-2 noto-serif glass-card" sx={{ mt: 1 }}>
         <Box
           className="noto-serif"

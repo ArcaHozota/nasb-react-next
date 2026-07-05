@@ -3,6 +3,7 @@
 // src/layouts/AdminLayout.tsx
 import { useState, useEffect, type KeyboardEvent, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Box,
   AppBar,
@@ -192,11 +193,14 @@ export default function AdminLayout({
           }}
         >
           <ListItemAvatar sx={{ minWidth: 49 }}>
-            <Avatar
-              src={brandLogo}
-              variant="square"
-              sx={{ width: 49, height: 49 }}
-            />
+            <Box sx={{ position: "relative", width: 49, height: 49 }}>
+              <Image
+                src={brandLogo}
+                alt=""
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </Box>
           </ListItemAvatar>
           <span
             className="effect-shine"

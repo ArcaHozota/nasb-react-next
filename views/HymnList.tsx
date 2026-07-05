@@ -4,6 +4,7 @@
 import { useState, useMemo, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 import {
   useQuery,
   keepPreviousData,
@@ -248,7 +249,16 @@ export default function HymnList() {
   );
 
   return (
-    <Box className="page-bg" sx={{ backgroundImage: `url(${bgImage})` }}>
+    <Box className="page-bg" sx={{ position: "relative" }}>
+      <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
+        <Image
+          src={bgImage}
+          alt=""
+          fill
+          priority
+          style={{ objectFit: "cover" }}
+        />
+      </Box>
       <Card className="mt-2 noto-serif glass-card" sx={{ mt: 1 }}>
         <Box
           className="noto-serif"
