@@ -308,7 +308,7 @@ export default function HymnForm() {
                   <Checkbox
                     checked={form.classic}
                     onChange={(e) => setField("classic", e.target.checked)}
-                    color="primary"
+                    color={isEdit ? "primary" : "success"}
                   />
                 }
                 label=""
