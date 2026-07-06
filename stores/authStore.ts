@@ -39,7 +39,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   login: async (username, password) => {
     const body = new URLSearchParams({ username, password });
-    await api.post("/login", body);
+    const { data } = await api.post("/login", body);
+    if (data?.message) {
+      localStorage.setItem("redirectMessage", data.message);
+    }
     await get().fetchMe();
   },
 
