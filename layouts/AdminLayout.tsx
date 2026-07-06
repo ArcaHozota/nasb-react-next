@@ -57,7 +57,9 @@ export default function AdminLayout({
 
   // 旧 router.tsx の RequireAuth 相当。ここで認証チェックを行う。
   useEffect(() => {
-    const onUnauthorized = () => router.push("/home");
+    const onUnauthorized = () => {
+      window.location.href = "/home";
+    };
     window.addEventListener("auth:unauthorized", onUnauthorized);
     return () =>
       window.removeEventListener("auth:unauthorized", onUnauthorized);
@@ -65,7 +67,9 @@ export default function AdminLayout({
 
   useEffect(() => {
     if (!user) {
-      fetchMe().catch(() => router.push("/home"));
+      fetchMe().catch(() => {
+        window.location.href = "/home";
+      });
     }
   }, [user, fetchMe, router]);
 
@@ -103,6 +107,7 @@ export default function AdminLayout({
     const ok = await confirm("ログアウトしてよろしいでしょうか。", "警告");
     if (!ok) return;
     await logout();
+    window.location.href = "/home";
   };
 
   const onSearch = () => {
