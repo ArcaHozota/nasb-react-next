@@ -27,6 +27,11 @@ import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 import { useRef } from "react";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import IconButton from "@mui/material/IconButton";
+// import追加
+import {
+  RedLetterEditor,
+  type RedLetterEditorHandle,
+} from "@/components/RedLetterEditor";
 
 type BookOrChapter = { id: number; name: string };
 
@@ -50,8 +55,10 @@ export default function BookAddition() {
     phraseId: false,
   });
   // state群のそばに追加
-  const textEnRef = useRef<HTMLTextAreaElement | null>(null);
-  const textJpRef = useRef<HTMLTextAreaElement | null>(null);
+  // refをTextField用からEditor用に変更
+  const textEnEditorRef = useRef<RedLetterEditorHandle | null>(null);
+  const textJpEditorRef = useRef<RedLetterEditorHandle | null>(null);
+
   const wrapSelection = (
     ref: React.MutableRefObject<HTMLTextAreaElement | null>,
     value: string,
@@ -176,21 +183,16 @@ export default function BookAddition() {
             英語
           </Grid>
           <Grid size={{ xs: 12, md: 10 }}>
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
+            <RedLetterEditor
+              ref={textEnEditorRef}
               value={textEn}
-              onChange={(e) => setTextEn(e.target.value)}
-              variant="outlined"
-              className="noto-serif"
+              onChange={setTextEn}
               error={errors.textEn}
               helperText={
                 errors.textEn
                   ? "上記の入力ボックスを空になってはいけません。"
-                  : ""
+                  : undefined
               }
-              inputRef={textEnRef}
             />
           </Grid>
           <Grid
@@ -199,7 +201,8 @@ export default function BookAddition() {
           >
             <IconButton
               color="error"
-              onClick={() => wrapSelection(textEnRef, textEn, setTextEn)}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => textEnEditorRef.current?.wrapSelection()}
               title="選択範囲を赤文字にする"
             >
               <FormatColorTextIcon />
@@ -225,7 +228,7 @@ export default function BookAddition() {
                     ? "上記の入力ボックスを空になってはいけません。"
                     : ""
                 }
-                inputRef={textJpRef}
+                inputRef={textJpEditorRef}
               />
             </Grid>
           </Grid>
