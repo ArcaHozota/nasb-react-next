@@ -59,32 +59,6 @@ export default function BookAddition() {
   const textEnEditorRef = useRef<RedLetterEditorHandle | null>(null);
   const textJpEditorRef = useRef<RedLetterEditorHandle | null>(null);
 
-  const wrapSelection = (
-    ref: React.MutableRefObject<HTMLTextAreaElement | null>,
-    value: string,
-    setValue: (v: string) => void,
-  ) => {
-    const el = ref.current;
-    if (!el) return;
-    const start = el.selectionStart ?? 0;
-    const end = el.selectionEnd ?? 0;
-    if (start === end) {
-      toast("赤文字にしたい範囲を選択してください");
-      return;
-    }
-    const before = value.slice(0, start);
-    const selected = value.slice(start, end);
-    const after = value.slice(end);
-    const next = `${before}{{${selected}}}${after}`;
-    setValue(next);
-    // カーソル位置を選択範囲の直後に戻す
-    requestAnimationFrame(() => {
-      el.focus();
-      const pos = start + selected.length + 4;
-      el.setSelectionRange(pos, pos);
-    });
-  };
-
   // 初期表示: 書一覧を取得
   useEffect(() => {
     (async () => {
