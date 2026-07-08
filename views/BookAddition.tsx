@@ -153,56 +153,54 @@ export default function BookAddition() {
         </Box>
 
         <Box sx={{ p: 3 }}>
-          <Grid size={{ xs: 12, md: 1 }} className="label-text">
-            英語
+          <Grid container spacing={2} sx={{ alignItems: "center" }}>
+            <Grid size={{ xs: 12, md: 1 }} className="label-text">
+              英語
+            </Grid>
+            <Grid size={{ xs: 12, md: 11 }}>
+              <RedLetterEditor
+                ref={textEnEditorRef}
+                value={textEn}
+                onChange={setTextEn}
+                error={errors.textEn}
+                helperText={
+                  errors.textEn
+                    ? "上記の入力ボックスを空になってはいけません。"
+                    : undefined
+                }
+              />
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 10 }}>
-            <RedLetterEditor
-              ref={textEnEditorRef}
-              value={textEn}
-              onChange={setTextEn}
-              error={errors.textEn}
-              helperText={
-                errors.textEn
-                  ? "上記の入力ボックスを空になってはいけません。"
-                  : undefined
-              }
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 12, md: 1 }}
-            sx={{ display: "flex", alignItems: "flex-start" }}
-          >
+
+          <Box sx={{ mt: 1, mb: 1 }}>
             <IconButton
               color="error"
               onMouseDown={(e) => e.preventDefault()}
-              onClick={() => textEnEditorRef.current?.wrapSelection()}
+              onClick={() => {
+                textEnEditorRef.current?.wrapSelection();
+                textJpEditorRef.current?.wrapSelection();
+              }}
               title="選択範囲を赤文字にする"
             >
               <FormatColorTextIcon />
             </IconButton>
-          </Grid>
+          </Box>
 
           <Grid container spacing={2} sx={{ alignItems: "center", mt: 1 }}>
             <Grid size={{ xs: 12, md: 1 }} className="label-text">
               日本語
             </Grid>
             <Grid size={{ xs: 12, md: 11 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
+              <RedLetterEditor
+                ref={textJpEditorRef}
                 value={textJp}
-                onChange={(e) => setTextJp(e.target.value)}
-                variant="outlined"
-                className="noto-serif"
+                onChange={setTextJp}
                 error={errors.textJp}
                 helperText={
                   errors.textJp
                     ? "上記の入力ボックスを空になってはいけません。"
-                    : ""
+                    : undefined
                 }
-                inputRef={textJpEditorRef}
               />
             </Grid>
           </Grid>
