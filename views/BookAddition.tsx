@@ -23,6 +23,10 @@ import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg.webp";
 import "./BookAddition.css";
 import { EMPTY_STRING, extractErrorMessage } from "@/constants";
+// 追加import
+import { useRef } from "react";
+import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
+import IconButton from "@mui/material/IconButton";
 
 type BookOrChapter = { id: number; name: string };
 
@@ -45,6 +49,34 @@ export default function BookAddition() {
     textJp: false,
     phraseId: false,
   });
+  // state群のそばに追加
+  const textEnRef = useRef<HTMLTextAreaElement | null>(null);
+  const textJpRef = useRef<HTMLTextAreaElement | null>(null);
+  const wrapSelection = (
+    ref: React.MutableRefObject<HTMLTextAreaElement | null>,
+    value: string,
+    setValue: (v: string) => void,
+  ) => {
+    const el = ref.current;
+    if (!el) return;
+    const start = el.selectionStart ?? 0;
+    const end = el.selectionEnd ?? 0;
+    if (start === end) {
+      toast("赤文字にしたい範囲を選択してください");
+      return;
+    }
+    const before = value.slice(0, start);
+    const selected = value.slice(start, end);
+    const after = value.slice(end);
+    const next = `${before}{{${selected}}}${after}`;
+    setValue(next);
+    // カーソル位置を選択範囲の直後に戻す
+    requestAnimationFrame(() => {
+      el.focus();
+      const pos = start + selected.length + 4;
+      el.setSelectionRange(pos, pos);
+    });
+  };
 
   // 初期表示: 書一覧を取得
   useEffect(() => {
@@ -140,27 +172,38 @@ export default function BookAddition() {
         </Box>
 
         <Box sx={{ p: 3 }}>
-          <Grid container spacing={2} sx={{ alignItems: "center" }}>
-            <Grid size={{ xs: 12, md: 1 }} className="label-text">
-              英語
-            </Grid>
-            <Grid size={{ xs: 12, md: 11 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                value={textEn}
-                onChange={(e) => setTextEn(e.target.value)}
-                variant="outlined"
-                className="noto-serif"
-                error={errors.textEn}
-                helperText={
-                  errors.textEn
-                    ? "上記の入力ボックスを空になってはいけません。"
-                    : ""
-                }
-              />
-            </Grid>
+          <Grid size={{ xs: 12, md: 1 }} className="label-text">
+            英語
+          </Grid>
+          <Grid size={{ xs: 12, md: 10 }}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              value={textEn}
+              onChange={(e) => setTextEn(e.target.value)}
+              variant="outlined"
+              className="noto-serif"
+              error={errors.textEn}
+              helperText={
+                errors.textEn
+                  ? "上記の入力ボックスを空になってはいけません。"
+                  : ""
+              }
+              inputRef={textEnRef}
+            />
+          </Grid>
+          <Grid
+            size={{ xs: 12, md: 1 }}
+            sx={{ display: "flex", alignItems: "flex-start" }}
+          >
+            <IconButton
+              color="error"
+              onClick={() => wrapSelection(textEnRef, textEn, setTextEn)}
+              title="選択範囲を赤文字にする"
+            >
+              <FormatColorTextIcon />
+            </IconButton>
           </Grid>
 
           <Grid container spacing={2} sx={{ alignItems: "center", mt: 1 }}>
@@ -182,6 +225,7 @@ export default function BookAddition() {
                     ? "上記の入力ボックスを空になってはいけません。"
                     : ""
                 }
+                inputRef={textJpRef}
               />
             </Grid>
           </Grid>

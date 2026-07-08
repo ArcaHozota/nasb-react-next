@@ -25,3 +25,8 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
 }
+
+/* src/views/BookAddition.css に追記 */
+.red-letter {
+    color: #c62828;
+}
