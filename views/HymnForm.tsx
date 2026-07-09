@@ -239,7 +239,7 @@ export default function HymnForm() {
         </Typography>
       </Breadcrumbs>
 
-      <Card className="glass-card">
+      <Card className={`form-card${isEdit ? " is-edit" : ""}`}>
         <Box
           sx={{
             px: 2,
