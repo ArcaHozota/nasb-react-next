@@ -123,16 +123,16 @@ export default function BookAddition() {
 
     setSaving(true);
     try {
-      await api.post("/books/info-storage", {
+      const { data } = await api.post("/books/info-storage", {
         chapterId,
         id: phraseId.trim(),
         textEn: textEn.trim(),
         textJp: textJp.trim(),
       });
-      toast("追加済み");
-      setPhraseId("");
-      setTextEn("");
-      setTextJp("");
+      toast(typeof data === "string" ? data : "追加済み");
+      setPhraseId(EMPTY_STRING);
+      setTextEn(EMPTY_STRING);
+      setTextJp(EMPTY_STRING);
       setErrors({ textEn: false, textJp: false, phraseId: false });
     } catch (e: unknown) {
       toast(extractErrorMessage(e, "保存に失敗しました"));
@@ -188,7 +188,11 @@ export default function BookAddition() {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2} sx={{ alignItems: "center", mt: 1, mb: 1 }}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ alignItems: "center", mt: 1, mb: 1 }}
+          >
             <Grid
               size={{ xs: 12, md: 1 }}
               sx={{ display: "flex", justifyContent: "flex-end" }}

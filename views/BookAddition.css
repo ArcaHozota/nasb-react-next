@@ -32,7 +32,7 @@
 }
 
 .red-letter-editor:focus {
-    border-color: #1976d2 !important;
+    border-color: #7f0020 !important;
     border-width: 2px;
     padding: 15.5px 13px;
     /* 枠が太くなる分だけ内側を詰めてガタつきを防ぐ */
