@@ -222,10 +222,17 @@ export default function AdminLayout({
             <ListItemButton
               key={item.key}
               onClick={item.action}
-              sx={{ justifyContent: "center" }} // ← 追加
+              sx={{ justifyContent: "center" }}
             >
-              <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
+              <ListItemIcon
+                sx={{ color: "inherit", minWidth: "auto", mr: 1.5 }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.title}
+                sx={{ flexGrow: 0 }}
+              />
             </ListItemButton>
           ))}
         </List>
