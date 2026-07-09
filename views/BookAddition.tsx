@@ -93,6 +93,22 @@ export default function BookAddition() {
     })();
   }, [bookId, toast]);
 
+  // 入力中でも該当欄が埋まった時点でアラート(エラー表示)を消す
+  const handleTextEnChange = (v: string) => {
+    setTextEn(v);
+    if (required(v)) setErrors((prev) => ({ ...prev, textEn: false }));
+  };
+
+  const handleTextJpChange = (v: string) => {
+    setTextJp(v);
+    if (required(v)) setErrors((prev) => ({ ...prev, textJp: false }));
+  };
+
+  const handlePhraseIdChange = (v: string) => {
+    setPhraseId(v);
+    if (required(v)) setErrors((prev) => ({ ...prev, phraseId: false }));
+  };
+
   const onStore = async () => {
     const nextErrors = {
       textEn: !required(textEn),
@@ -161,7 +177,7 @@ export default function BookAddition() {
               <RedLetterEditor
                 ref={textEnEditorRef}
                 value={textEn}
-                onChange={setTextEn}
+                onChange={handleTextEnChange}
                 error={errors.textEn}
                 helperText={
                   errors.textEn
@@ -200,7 +216,7 @@ export default function BookAddition() {
               <RedLetterEditor
                 ref={textJpEditorRef}
                 value={textJp}
-                onChange={setTextJp}
+                onChange={handleTextJpChange}
                 error={errors.textJp}
                 helperText={
                   errors.textJp
@@ -255,7 +271,7 @@ export default function BookAddition() {
               <TextField
                 fullWidth
                 value={phraseId}
-                onChange={(e) => setPhraseId(e.target.value)}
+                onChange={(e) => handlePhraseIdChange(e.target.value)}
                 placeholder="節の数を入力しましょう"
                 variant="outlined"
                 size="small"
