@@ -136,7 +136,7 @@ export default function BookAddition() {
           style={{ objectFit: "cover" }}
         />
       </Box>
-      <Card className="mt-2 noto-serif glass-card" sx={{ mt: 1 }}>
+      <Card className="mt-2 noto-serif bookaddition-card" sx={{ mt: 1 }}>
         <Box
           className="noto-serif"
           sx={{
@@ -267,7 +267,7 @@ export default function BookAddition() {
               <Button
                 fullWidth
                 variant="contained"
-                color="secondary"
+                color="primary"
                 className="noto-serif"
                 sx={{ height: 40 }}
                 disabled={saving}
