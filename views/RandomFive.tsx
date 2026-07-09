@@ -83,7 +83,7 @@ export default function RandomFive() {
           style={{ objectFit: "cover" }}
         />
       </Box>
-      <Card className="mt-2 noto-serif glass-card" sx={{ mt: 1 }}>
+      <Card className="mt-2 noto-serif randomfive-card" sx={{ mt: 1 }}>
         <Box
           sx={{
             px: 2,

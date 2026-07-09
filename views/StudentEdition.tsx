@@ -194,7 +194,7 @@ export default function StudentEdition() {
         <Typography color="text.primary">データ更新</Typography>
       </Breadcrumbs>
 
-      <Card className="glass-card">
+      <Card className="studentedition-card">
         <Box
           sx={{
             px: 2,
