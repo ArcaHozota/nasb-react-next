@@ -259,7 +259,7 @@ export default function HymnList() {
           style={{ objectFit: "cover" }}
         />
       </Box>
-      <Card className="mt-2 noto-serif glass-card" sx={{ mt: 1 }}>
+      <Card className="mt-2 noto-serif hymnlist-card" sx={{ mt: 1 }}>
         <Box
           className="noto-serif"
           sx={{
