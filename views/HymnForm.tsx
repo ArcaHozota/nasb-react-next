@@ -267,6 +267,7 @@ export default function HymnForm() {
               placeholder="日本語名称を入力してください"
               variant="outlined"
               size="small"
+              color={isEdit ? "primary" : "success"}
               error={!!errors.nameJp}
               helperText={errors.nameJp}
             />
@@ -282,6 +283,7 @@ export default function HymnForm() {
               placeholder="韓国語名称を入力してください"
               variant="outlined"
               size="small"
+              color={isEdit ? "primary" : "success"}
               error={!!errors.nameKr}
               helperText={errors.nameKr}
             />
@@ -297,6 +299,7 @@ export default function HymnForm() {
                 placeholder="リンクを入力してください"
                 variant="outlined"
                 size="small"
+                color={isEdit ? "primary" : "success"}
                 error={!!errors.link}
                 helperText={errors.link}
               />
@@ -326,6 +329,7 @@ export default function HymnForm() {
               onChange={(e) => setField("lyric", e.target.value)}
               placeholder="セリフを入力してください"
               variant="outlined"
+              color={isEdit ? "primary" : "success"}
               error={!!errors.lyric}
               helperText={errors.lyric}
             />
