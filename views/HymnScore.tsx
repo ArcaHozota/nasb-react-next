@@ -105,7 +105,7 @@ export default function HymnScore() {
         <Typography color="text.primary">楽譜アプロード</Typography>
       </Breadcrumbs>
 
-      <Card className="glass-card">
+      <Card className="score-card">
         <Box
           sx={{
             px: 2,
@@ -142,6 +142,7 @@ export default function HymnScore() {
               />
               <Button
                 variant="outlined"
+                color="secondary"
                 startIcon={<CloudUploadIcon />}
                 onClick={() => fileInputRef.current?.click()}
               >

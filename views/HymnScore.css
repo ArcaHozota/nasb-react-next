@@ -9,10 +9,48 @@
     padding: 16px;
 }
 
-.glass-card {
+.score-card {
+    position: relative;
+    border-radius: 18px;
     background: rgba(255, 255, 255, 0.82) !important;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.score-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #002fa7 320deg, #4d74d1 350deg, #002fa7 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.score-card:hover::before {
+    opacity: 1;
+    animation: rotate-border 2s linear infinite;
+}
+
+@keyframes rotate-border {
+    to {
+        --angle: 360deg;
+    }
 }
 
 .page-breadcrumb {
