@@ -172,19 +172,25 @@ export default function BookAddition() {
             </Grid>
           </Grid>
 
-          <Box sx={{ mt: 1, mb: 1 }}>
-            <IconButton
-              color="error"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => {
-                textEnEditorRef.current?.wrapSelection();
-                textJpEditorRef.current?.wrapSelection();
-              }}
-              title="選択範囲を赤文字にする"
+          <Grid container spacing={2} sx={{ alignItems: "center", mt: 1, mb: 1 }}>
+            <Grid
+              size={{ xs: 12, md: 1 }}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
             >
-              <FormatColorTextIcon />
-            </IconButton>
-          </Box>
+              <IconButton
+                color="error"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  textEnEditorRef.current?.wrapSelection();
+                  textJpEditorRef.current?.wrapSelection();
+                }}
+                title="選択範囲を赤文字にする(再押下で解除)"
+              >
+                <FormatColorTextIcon />
+              </IconButton>
+            </Grid>
+            <Grid size={{ xs: 12, md: 11 }} />
+          </Grid>
 
           <Grid container spacing={2} sx={{ alignItems: "center", mt: 1 }}>
             <Grid size={{ xs: 12, md: 1 }} className="label-text">

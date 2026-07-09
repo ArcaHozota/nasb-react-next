@@ -106,6 +106,24 @@ export type RedLetterEditorHandle = {
   wrapSelection: () => void;
 };
 
+// 指定ノードから container に向かって遡り、red-letter span を探す
+function findRedLetterAncestor(
+  node: Node | null,
+  container: HTMLElement,
+): HTMLElement | null {
+  let cur: Node | null = node;
+  while (cur && cur !== container) {
+    if (
+      cur.nodeType === Node.ELEMENT_NODE &&
+      (cur as HTMLElement).classList.contains("red-letter")
+    ) {
+      return cur as HTMLElement;
+    }
+    cur = cur.parentNode;
+  }
+  return null;
+}
+
 type Props = {
   value: string;
   onChange: (v: string) => void;
@@ -157,6 +175,24 @@ export const RedLetterEditor = forwardRef<RedLetterEditorHandle, Props>(
         if (!el || !sel || sel.rangeCount === 0 || sel.isCollapsed) return;
         const range = sel.getRangeAt(0);
         if (!el.contains(range.commonAncestorContainer)) return;
+
+        // 選択範囲がすでに1つの赤文字spanと一致する場合は、通常の文字列に戻す(トグル解除)
+        const startSpan = findRedLetterAncestor(range.startContainer, el);
+        const endSpan = findRedLetterAncestor(range.endContainer, el);
+        if (startSpan && startSpan === endSpan) {
+          const textNode = document.createTextNode(
+            startSpan.textContent ?? "",
+          );
+          startSpan.parentNode?.replaceChild(textNode, startSpan);
+          const newRange = document.createRange();
+          newRange.setStart(textNode, textNode.length);
+          newRange.collapse(true);
+          sel.removeAllRanges();
+          sel.addRange(newRange);
+          reconcile();
+          return;
+        }
+
         const span = document.createElement("span");
         span.className = "red-letter";
         span.appendChild(range.extractContents());
