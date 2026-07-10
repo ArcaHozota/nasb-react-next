@@ -48,7 +48,7 @@
 
 .form-card:hover::before {
     opacity: 1;
-    animation: rotate-border 2s linear infinite;
+    animation: rotate-border 3300ms linear infinite;
 }
 
 @keyframes rotate-border {

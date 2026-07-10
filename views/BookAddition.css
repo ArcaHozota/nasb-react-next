@@ -73,7 +73,7 @@
 
 .bookaddition-card:hover::before {
     opacity: 1;
-    animation: rotate-border 6600ms linear infinite;
+    animation: rotate-border 3300ms linear infinite;
 }
 
 @keyframes rotate-border {
