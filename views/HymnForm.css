@@ -43,7 +43,7 @@
 }
 
 .form-card.is-edit::before {
-    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #7f0020 320deg, #c0405f 350deg, #7f0020 360deg);
+    background: conic-gradient(from var(--angle), transparent 0deg, transparent 270deg, #800020 320deg, #c0405f 350deg, #800020 360deg);
 }
 
 .form-card:hover::before {
