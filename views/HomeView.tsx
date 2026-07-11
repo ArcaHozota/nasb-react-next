@@ -23,7 +23,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import brandLogo from "@/assets/jerusalem-cross2.svg";
-import bgImage from "@/assets/home-bg.webp";
+import bgImage from "@/assets/home-bg2.png";
 import bgImageMobile from "@/assets/home-bg2.webp";
 import "./HomeView.css";
 import { extractErrorMessage } from "@/constants";
@@ -89,8 +89,7 @@ export default function HomeView() {
 
   useEffect(() => {
     if (error) {
-      const msg =
-        (error as AxiosError<string>)?.response?.data ?? "通信エラー";
+      const msg = (error as AxiosError<string>)?.response?.data ?? "通信エラー";
       toast(msg);
     }
   }, [error, toast]);
