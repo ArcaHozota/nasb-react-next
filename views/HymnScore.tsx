@@ -85,12 +85,15 @@ export default function HymnScore() {
           style={{ objectFit: "cover" }}
         />
       </Box>
-      <Breadcrumbs className="page-breadcrumb" sx={{ px: 0, mb: 1 }}>
+      <Breadcrumbs
+        className="page-breadcrumb"
+        sx={{ px: 0, mb: 1, color: "#fffff0" }}
+      >
         <Link
           component={NextLink}
           href="/mainmenu"
           underline="hover"
-          color="inherit"
+          sx={{ color: "#fffff0" }}
         >
           メインメニュー
         </Link>
@@ -98,11 +101,11 @@ export default function HymnScore() {
           component={NextLink}
           href={`/hymns?${buildListQuery()}`}
           underline="hover"
-          color="inherit"
+          sx={{ color: "#fffff0" }}
         >
           データリスト
         </Link>
-        <Typography color="text.primary">楽譜アプロード</Typography>
+        <Typography sx={{ color: "#fffff0" }}>楽譜アプロード</Typography>
       </Breadcrumbs>
 
       <Card className="score-card">

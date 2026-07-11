@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useAuthStore } from "@/stores/authStore";
-import bgImage from "@/assets/login-bg.webp";
+import bgImage from "@/assets/mainmenu-bg6.webp";
 
 export default function LoginView() {
   const router = useRouter();

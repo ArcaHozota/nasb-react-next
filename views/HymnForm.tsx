@@ -217,12 +217,12 @@ export default function HymnForm() {
           style={{ objectFit: "cover" }}
         />
       </Box>
-      <Breadcrumbs className="page-breadcrumb" sx={{ px: 0 }}>
+      <Breadcrumbs className="page-breadcrumb" sx={{ px: 0, color: "#fffff0" }}>
         <Link
           component={NextLink}
           href="/mainmenu"
           underline="hover"
-          color="inherit"
+          sx={{ color: "#fffff0" }}
         >
           メインメニュー
         </Link>
@@ -230,11 +230,11 @@ export default function HymnForm() {
           component={NextLink}
           href={`/hymns?${buildListQuery()}`}
           underline="hover"
-          color="inherit"
+          sx={{ color: "#fffff0" }}
         >
           データリスト
         </Link>
-        <Typography color="text.primary">
+        <Typography sx={{ color: "#fffff0" }}>
           {isEdit ? "データ更新" : "データ追加"}
         </Typography>
       </Breadcrumbs>
