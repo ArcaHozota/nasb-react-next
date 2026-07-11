@@ -16,7 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import GridViewIcon from "@mui/icons-material/GridView";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
-import bgImage from "@/assets/mainmenu-bg3.png";
+import bgImage from "@/assets/mainmenu-bg6.webp";
 import "./RandomFive.css";
 import { extractErrorMessage } from "@/constants";
 

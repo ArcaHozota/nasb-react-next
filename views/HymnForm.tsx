@@ -22,7 +22,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import { useAuthStore } from "@/stores/authStore";
-import bgImage from "@/assets/mainmenu-bg2.png";
+import bgImage from "@/assets/mainmenu-bg5.webp";
 import "./HymnForm.css";
 import { extractErrorMessage } from "@/constants";
 

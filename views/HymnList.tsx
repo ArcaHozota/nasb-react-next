@@ -30,7 +30,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import { extractErrorMessage, utf8ToBase64 } from "@/constants";
-import bgImage from "@/assets/mainmenu-bg2.webp";
+import bgImage from "@/assets/mainmenu-bg5.webp";
 import "./HymnList.css";
 
 type HymnRow = {
