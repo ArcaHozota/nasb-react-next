@@ -23,7 +23,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import brandLogo from "@/assets/jerusalem-cross2.svg";
-import bgImage from "@/assets/home-bg2.png";
+import bgImage from "@/assets/home-bg2.webp";
 import bgImageMobile from "@/assets/home-bg2.webp";
 import "./HomeView.css";
 import { extractErrorMessage } from "@/constants";
