@@ -211,9 +211,16 @@ export default function HomeView() {
             variant="filled"
             hiddenLabel
             sx={{
-              bgcolor: "white",
+              bgcolor: "rgba(255, 255, 255, 0.67)",
               borderRadius: 999,
-              "& .MuiFilledInput-root": { borderRadius: 999 },
+              "& .MuiFilledInput-root": {
+                borderRadius: 999,
+                bgcolor: "transparent",
+              },
+              "& .MuiFilledInput-root:hover": { bgcolor: "transparent" },
+              "& .MuiFilledInput-root.Mui-focused": {
+                bgcolor: "transparent",
+              },
             }}
             slotProps={{
               input: {
