@@ -4,6 +4,7 @@
 import { create } from "zustand";
 import api from "@/api/axios";
 import { EMPTY_STRING } from "@/constants";
+import axios from "axios";
 
 type User = {
   id: number;
@@ -37,9 +38,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   hasRole: (role) => get().user?.roles?.includes(role) ?? false,
 
   fetchMe: async () => {
-    const { data } = await api.get("/me");
-    set({ user: data });
-    return data;
+    try {
+      const { data } = await api.get("/me");
+      set({ user: data });
+      return data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+        set({ user: null });
+        return null;
+      }
+      throw err;
+    }
   },
 
   login: async (username, password) => {
