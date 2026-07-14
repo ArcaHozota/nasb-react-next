@@ -1,34 +1,40 @@
 // src/api/axios.ts
 import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
 
 const api = axios.create({
   baseURL: "/api",
   withCredentials: true,
-  xsrfCookieName: "XSRF-TOKEN",
-  xsrfHeaderName: "X-XSRF-TOKEN",
 });
 
-// CSRFトークンを手動でヘッダーに付与(EC2本番環境対応)
-api.interceptors.request.use(async (config) => {
-  if (
-    config.method &&
-    ["post", "put", "delete", "patch"].includes(config.method)
-  ) {
-    let token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("XSRF-TOKEN="))
-      ?.split("=")[1];
-    if (!token) {
-      const res = await axios.get("/api/csrf");
-      token = res.data.token;
+// CSRFトークンをリクエストヘッダーへ付与(通常パス)
+api.interceptors.request.use((config) => {
+  const method = config.method?.toLowerCase();
+  if (method && ["post", "put", "delete", "patch"].includes(method)) {
+    const { csrfToken, csrfHeaderName } = useAuthStore.getState();
+    if (csrfToken) {
+      config.headers[csrfHeaderName] = csrfToken;
     }
-    config.headers["X-XSRF-TOKEN"] = token;
   }
   return config;
 });
 
+// CSRFトークン失効時のリトライ(EC2本番環境対応)
+api.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    if (err.response?.status === 403 && !err.config._retried) {
+      err.config._retried = true;
+      await useAuthStore.getState().initCsrf();
+      const { csrfToken, csrfHeaderName } = useAuthStore.getState();
+      err.config.headers[csrfHeaderName] = csrfToken;
+      return api.request(err.config);
+    }
+    return Promise.reject(err);
+  },
+);
+
 // 未認証(401)をログイン画面へリダイレクト
-// router.tsx の RequireAuth 側で拾えるよう、イベント発火に留める
 api.interceptors.response.use(
   (res) => res,
   (err) => {

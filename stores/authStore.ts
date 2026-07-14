@@ -12,6 +12,8 @@ type User = {
 
 type AuthState = {
   user: User;
+  csrfToken: string | null; // add this
+  csrfHeaderName: string; // add this
   isLoggedIn: () => boolean;
   username: () => string;
   userId: () => number | null;
@@ -24,6 +26,8 @@ type AuthState = {
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
+  csrfToken: null,
+  csrfHeaderName: "X-XSRF-TOKEN", // default Spring header name
 
   // Pinia の getters 相当。Zustand では関数として呼ぶ形にする
   isLoggedIn: () => !!get().user,
@@ -38,6 +42,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   login: async (username, password) => {
+    if (!get().csrfToken) {
+      await get().initCsrf();
+    }
     const body = new URLSearchParams({ username, password });
     const { data } = await api.post("/login", body);
     if (data?.message) {
@@ -52,6 +59,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   initCsrf: async () => {
-    await api.get("/csrf");
+    const { data } = await api.get("/csrf");
+    // Spring's CsrfToken JSON shape: { token, headerName, parameterName }
+    set({ csrfToken: data.token, csrfHeaderName: data.headerName });
   },
 }));
