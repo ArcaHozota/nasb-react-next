@@ -26,6 +26,8 @@ type AuthState = {
   initCsrf: () => Promise<void>;
 };
 
+let csrfInflight: Promise<void> | null = null;
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   csrfToken: null,
@@ -51,26 +53,32 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
+  logout: async () => {
+    await api.post("/logout");
+    set({ user: null, csrfToken: null });
+  },
+
   login: async (username, password) => {
-    if (!get().csrfToken) {
-      await get().initCsrf();
-    }
+    await get().initCsrf(); // always fetch a fresh token right before login
     const body = new URLSearchParams({ username, password });
     const { data } = await api.post("/login", body);
     if (data?.message) {
       localStorage.setItem("redirectMessage", data.message);
     }
+    await get().initCsrf(); // Spring may rotate session on auth; refresh again after
     await get().fetchMe();
   },
 
-  logout: async () => {
-    await api.post("/logout");
-    set({ user: null });
-  },
-
   initCsrf: async () => {
-    const { data } = await api.get("/csrf");
-    // Spring's CsrfToken JSON shape: { token, headerName, parameterName }
-    set({ csrfToken: data.token, csrfHeaderName: data.headerName });
+    if (csrfInflight) return csrfInflight;
+    csrfInflight = (async () => {
+      const { data } = await api.get("/csrf");
+      set({ csrfToken: data.token, csrfHeaderName: data.headerName });
+    })();
+    try {
+      await csrfInflight;
+    } finally {
+      csrfInflight = null;
+    }
   },
 }));
