@@ -22,6 +22,7 @@ import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg2.webp";
 import "./HymnScore.css";
 import { EMPTY_STRING, extractErrorMessage } from "@/constants";
+import axios from "axios";
 
 export default function HymnScore() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function HymnScore() {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState(EMPTY_STRING);
   const [uploading, setUploading] = useState(false);
+  const [, setProgress] = useState(0); // add this line
 
   const buildListQuery = () => {
     const qs = new URLSearchParams();
@@ -56,19 +58,30 @@ export default function HymnScore() {
       setError("ファイルを選択してください。");
       return;
     }
-
     const formData = new FormData();
     formData.append("id", scoreId ?? EMPTY_STRING);
     formData.append("score", file);
-
+    const controller = new AbortController();
     setUploading(true);
+    setProgress(0);
     try {
-      // multipartはContent-Typeを指定せず、ブラウザにboundary付きで自動設定させる
-      const { data } = await api.post("/hymns/score-upload", formData);
+      const { data } = await api.post("/hymns/score-upload", formData, {
+        signal: controller.signal,
+        timeout: 66_000,
+        onUploadProgress: (evt) => {
+          if (evt.total) {
+            setProgress(Math.round((evt.loaded / evt.total) * 100));
+          }
+        },
+      });
       toast(typeof data === "string" ? data : "アップロードしました");
       router.push(`/hymns?${buildListQuery()}`);
     } catch (e: unknown) {
-      toast(extractErrorMessage(e, "通信エラーが発生しました。"));
+      if (axios.isCancel(e)) {
+        toast("アップロードをキャンセルしました");
+      } else {
+        toast(extractErrorMessage(e, "通信エラーが発生しました。"));
+      }
     } finally {
       setUploading(false);
     }
