@@ -24,7 +24,7 @@ import { useFeedbackStore } from "@/stores/feedbackStore";
 import { useAuthStore } from "@/stores/authStore";
 import bgImage from "@/assets/mainmenu-bg5.webp";
 import "./HymnForm.css";
-import { extractErrorMessage } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 type FormState = {
   id: string | null;
@@ -39,13 +39,13 @@ type FormState = {
 
 const emptyForm: FormState = {
   id: null,
-  nameJp: "",
-  nameKr: "",
-  link: "",
-  lyric: "",
+  nameJp: EMPTY_STRING,
+  nameKr: EMPTY_STRING,
+  link: EMPTY_STRING,
+  lyric: EMPTY_STRING,
   classic: false,
-  updatedTime: "",
-  updatedUser: "",
+  updatedTime: EMPTY_STRING,
+  updatedUser: EMPTY_STRING,
 };
 
 // バックエンドの { status, message } / 旧仕様の文字列レスポンス、両対応
@@ -58,7 +58,9 @@ const emptyForm: FormState = {
 // };
 
 const required = (v: string) =>
-  !!v && v.trim() !== "" ? "" : "上記の入力ボックスを空になってはいけません。";
+  !!v && v.trim() !== EMPTY_STRING
+    ? EMPTY_STRING
+    : "上記の入力ボックスを空になってはいけません。";
 
 export default function HymnForm() {
   const router = useRouter();
@@ -68,16 +70,16 @@ export default function HymnForm() {
 
   const editId = searchParams.get("editId");
   const isEdit = !!editId;
-  const pageNum = searchParams.get("pageNum") ?? "";
-  const pageSize = searchParams.get("pageSize") ?? "";
-  const keyword = searchParams.get("keyword") ?? "";
+  const pageNum = searchParams.get("pageNum") ?? EMPTY_STRING;
+  const pageSize = searchParams.get("pageSize") ?? EMPTY_STRING;
+  const keyword = searchParams.get("keyword") ?? EMPTY_STRING;
 
   const [form, setForm] = useState<FormState>({ ...emptyForm, id: editId });
   const [errors, setErrors] = useState({
-    nameJp: "",
-    nameKr: "",
-    link: "",
-    lyric: "",
+    nameJp: EMPTY_STRING,
+    nameKr: EMPTY_STRING,
+    link: EMPTY_STRING,
+    lyric: EMPTY_STRING,
   });
   const [saving, setSaving] = useState(false);
   const originalForm = useRef<FormState | null>(null);
@@ -104,11 +106,11 @@ export default function HymnForm() {
 
   const checkNameJp = async (e: FocusEvent<HTMLInputElement>) => {
     const name = e.target.value.trim();
-    setErrors((er) => ({ ...er, nameJp: "" }));
+    setErrors((er) => ({ ...er, nameJp: EMPTY_STRING }));
     if (!name) return;
     try {
       await api.get("/hymns/check-duplicated", {
-        params: { id: form.id ?? "", nameJp: name },
+        params: { id: form.id ?? EMPTY_STRING, nameJp: name },
       });
     } catch (e) {
       setErrors((er) => ({
@@ -120,11 +122,11 @@ export default function HymnForm() {
 
   const checkNameKr = async (e: FocusEvent<HTMLInputElement>) => {
     const name = e.target.value.trim().normalize("NFC");
-    setErrors((er) => ({ ...er, nameKr: "" }));
+    setErrors((er) => ({ ...er, nameKr: EMPTY_STRING }));
     if (!name) return;
     try {
       await api.get("/hymns/check-duplicated2", {
-        params: { id: form.id ?? "", nameKr: name },
+        params: { id: form.id ?? EMPTY_STRING, nameKr: name },
       });
     } catch (e) {
       setErrors((er) => ({
@@ -203,7 +205,12 @@ export default function HymnForm() {
     } else {
       setForm({ ...emptyForm, id: editId });
     }
-    setErrors({ nameJp: "", nameKr: "", link: "", lyric: "" });
+    setErrors({
+      nameJp: EMPTY_STRING,
+      nameKr: EMPTY_STRING,
+      link: EMPTY_STRING,
+      lyric: EMPTY_STRING,
+    });
   };
 
   return (
@@ -211,7 +218,7 @@ export default function HymnForm() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}
@@ -239,7 +246,7 @@ export default function HymnForm() {
         </Typography>
       </Breadcrumbs>
 
-      <Card className={`form-card${isEdit ? " is-edit" : ""}`}>
+      <Card className={`form-card${isEdit ? " is-edit" : EMPTY_STRING}`}>
         <Box
           sx={{
             px: 2,
@@ -314,7 +321,7 @@ export default function HymnForm() {
                     color={isEdit ? "primary" : "success"}
                   />
                 }
-                label=""
+                label={EMPTY_STRING}
               />
             </div>
           </Box>

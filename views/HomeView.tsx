@@ -26,7 +26,7 @@ import brandLogo from "@/assets/jerusalem-cross2.svg";
 import bgImage from "@/assets/home-bg3.webp";
 import bgImageMobile from "@/assets/home-bg2.webp";
 import "./HomeView.css";
-import { extractErrorMessage } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 type HymnRecord = {
   id: number;
@@ -48,7 +48,7 @@ const lineClass = (line: string) =>
     BURGUNDY: "is-burgundy",
     NAPLES: "is-naples",
     CADMIUM: "is-cadmium",
-  })[line] ?? "";
+  })[line] ?? EMPTY_STRING;
 
 export default function HomeView() {
   const router = useRouter();
@@ -58,8 +58,8 @@ export default function HomeView() {
   const PAGE_SIZE = isMobile ? 2 : 5;
 
   const [page, setPage] = useState(1);
-  const [keyword, setKeyword] = useState(""); // 入力欄の値(即時反映)
-  const [submittedKeyword, setSubmittedKeyword] = useState(""); // 検索確定値(クエリキー用)
+  const [keyword, setKeyword] = useState(EMPTY_STRING); // 入力欄の値(即時反映)
+  const [submittedKeyword, setSubmittedKeyword] = useState(EMPTY_STRING); // 検索確定値(クエリキー用)
 
   // モバイル/デスクトップ切替でページサイズが変わるため1ページ目から取り直す
   // (初回マウント時は実行しない)
@@ -129,8 +129,8 @@ export default function HomeView() {
   const goLogin = () => router.push("/login");
   const reload = () => {
     setPage(1);
-    setKeyword("");
-    setSubmittedKeyword("");
+    setKeyword(EMPTY_STRING);
+    setSubmittedKeyword(EMPTY_STRING);
   };
 
   // ===== モバイル: 左右スワイプでページ送り =====
@@ -176,7 +176,7 @@ export default function HomeView() {
       <div style={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={currentBg}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}
@@ -201,7 +201,9 @@ export default function HomeView() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <div className={`search-row ${isFetching ? "search-loading" : ""}`}>
+        <div
+          className={`search-row ${isFetching ? "search-loading" : EMPTY_STRING}`}
+        >
           <TextField
             fullWidth
             value={keyword}
@@ -235,7 +237,9 @@ export default function HomeView() {
           />
         </div>
 
-        <div className={`card-row ${isFetching ? "card-row--loading" : ""}`}>
+        <div
+          className={`card-row ${isFetching ? "card-row--loading" : EMPTY_STRING}`}
+        >
           {!isFetching && records.length === 0 && (
             <div className="loading">該当データなし</div>
           )}

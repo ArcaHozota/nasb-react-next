@@ -35,7 +35,9 @@ function parseToSegments(raw: string): Segment[] {
 }
 
 function segmentsToRaw(segments: Segment[]): string {
-  return segments.map((s) => (s.red ? `{{${s.text}}}` : s.text)).join("");
+  return segments
+    .map((s) => (s.red ? `{{${s.text}}}` : s.text))
+    .join(EMPTY_STRING);
 }
 
 function domToSegments(container: HTMLElement): Segment[] {
@@ -181,7 +183,9 @@ export const RedLetterEditor = forwardRef<RedLetterEditorHandle, Props>(
         const startSpan = findRedLetterAncestor(range.startContainer, el);
         const endSpan = findRedLetterAncestor(range.endContainer, el);
         if (startSpan && startSpan === endSpan) {
-          const textNode = document.createTextNode(startSpan.textContent ?? "");
+          const textNode = document.createTextNode(
+            startSpan.textContent ?? EMPTY_STRING,
+          );
           startSpan.parentNode?.replaceChild(textNode, startSpan);
           const newRange = document.createRange();
           newRange.setStart(textNode, textNode.length);

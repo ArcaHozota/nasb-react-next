@@ -35,18 +35,18 @@ import {
 
 type BookOrChapter = { id: number; name: string };
 
-const required = (v: string) => !!v && v.trim() !== "";
+const required = (v: string) => !!v && v.trim() !== EMPTY_STRING;
 
 export default function BookAddition() {
   const toast = useFeedbackStore((s) => s.toast);
 
   const [books, setBooks] = useState<BookOrChapter[]>([]);
   const [chapters, setChapters] = useState<BookOrChapter[]>([]);
-  const [bookId, setBookId] = useState<number | "">("");
-  const [chapterId, setChapterId] = useState<number | "">("");
-  const [phraseId, setPhraseId] = useState("");
-  const [textEn, setTextEn] = useState("");
-  const [textJp, setTextJp] = useState("");
+  const [bookId, setBookId] = useState<number | string>(EMPTY_STRING);
+  const [chapterId, setChapterId] = useState<number | string>(EMPTY_STRING);
+  const [phraseId, setPhraseId] = useState(EMPTY_STRING);
+  const [textEn, setTextEn] = useState(EMPTY_STRING);
+  const [textJp, setTextJp] = useState(EMPTY_STRING);
   const [chapterLoading, setChapterLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({
@@ -146,7 +146,7 @@ export default function BookAddition() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}
@@ -284,7 +284,7 @@ export default function BookAddition() {
                 helperText={
                   errors.phraseId
                     ? "上記の入力ボックスを空になってはいけません。"
-                    : ""
+                    : EMPTY_STRING
                 }
               />
             </Grid>

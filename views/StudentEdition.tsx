@@ -47,7 +47,9 @@ const emptyForm: StudentForm = {
 };
 
 const required = (v: string) =>
-  !!v && v.trim() !== EMPTY_STRING ? EMPTY_STRING : "上記の入力ボックスを空になってはいけません。";
+  !!v && v.trim() !== EMPTY_STRING
+    ? EMPTY_STRING
+    : "上記の入力ボックスを空になってはいけません。";
 
 const toDateInputValue = (src: string) => {
   if (!src) return EMPTY_STRING;
@@ -175,7 +177,7 @@ export default function StudentEdition() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=EMPTY_STRING
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}

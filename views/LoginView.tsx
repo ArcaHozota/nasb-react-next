@@ -16,15 +16,16 @@ import {
 } from "@mui/material";
 import { useAuthStore } from "@/stores/authStore";
 import bgImage from "@/assets/mainmenu-bg6.webp";
+import { EMPTY_STRING } from "@/constants";
 
 export default function LoginView() {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
   const initCsrf = useAuthStore((s) => s.initCsrf);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState(EMPTY_STRING);
+  const [password, setPassword] = useState(EMPTY_STRING);
+  const [error, setError] = useState(EMPTY_STRING);
   const [loading, setLoading] = useState(false);
 
   // 旧 onMounted(() => auth.initCsrf())
@@ -33,7 +34,7 @@ export default function LoginView() {
   }, [initCsrf]);
 
   const onLogin = async () => {
-    setError("");
+    setError(EMPTY_STRING);
     setLoading(true);
     try {
       await login(username, password);
@@ -64,7 +65,7 @@ export default function LoginView() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}

@@ -29,7 +29,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
-import { extractErrorMessage, utf8ToBase64 } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage, utf8ToBase64 } from "@/constants";
 import bgImage from "@/assets/mainmenu-bg5.webp";
 import "./HymnList.css";
 
@@ -42,10 +42,10 @@ type HymnRow = {
 };
 
 const textSizeClass = (str: string) => {
-  const len = (str ?? "").length;
+  const len = (str ?? EMPTY_STRING).length;
   if (len >= 33) return "text-xs";
   if (len >= 19) return "text-sm";
-  return "";
+  return EMPTY_STRING;
 };
 
 const rowClass = (line: string) =>
@@ -53,7 +53,7 @@ const rowClass = (line: string) =>
     BURGUNDY: "row-burgundy",
     NAPLES: "row-naples",
     CADMIUM: "row-cadmium",
-  })[line] ?? "";
+  })[line] ?? EMPTY_STRING;
 
 export default function HymnList() {
   const router = useRouter();
@@ -66,9 +66,11 @@ export default function HymnList() {
   const [pageSize, setPageSize] = useState(
     Number(searchParams.get("pageSize")) || 10,
   );
-  const [keyword, setKeyword] = useState(searchParams.get("keyword") ?? "");
+  const [keyword, setKeyword] = useState(
+    searchParams.get("keyword") ?? EMPTY_STRING,
+  );
   const [submittedKeyword, setSubmittedKeyword] = useState(
-    searchParams.get("keyword") ?? "",
+    searchParams.get("keyword") ?? EMPTY_STRING,
   );
 
   const { data, isFetching } = useQuery({
@@ -253,7 +255,7 @@ export default function HymnList() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}

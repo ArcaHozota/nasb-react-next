@@ -21,7 +21,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg2.webp";
 import "./HymnScore.css";
-import { extractErrorMessage } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 export default function HymnScore() {
   const router = useRouter();
@@ -30,12 +30,12 @@ export default function HymnScore() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scoreId = searchParams.get("scoreId");
-  const pageNum = searchParams.get("pageNum") ?? "";
-  const pageSize = searchParams.get("pageSize") ?? "";
-  const keyword = searchParams.get("keyword") ?? "";
+  const pageNum = searchParams.get("pageNum") ?? EMPTY_STRING;
+  const pageSize = searchParams.get("pageSize") ?? EMPTY_STRING;
+  const keyword = searchParams.get("keyword") ?? EMPTY_STRING;
 
   const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(EMPTY_STRING);
   const [uploading, setUploading] = useState(false);
 
   const buildListQuery = () => {
@@ -48,7 +48,7 @@ export default function HymnScore() {
 
   const onFilePick = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files?.[0] ?? null);
-    setError("");
+    setError(EMPTY_STRING);
   };
 
   const onUpload = async () => {
@@ -58,7 +58,7 @@ export default function HymnScore() {
     }
 
     const formData = new FormData();
-    formData.append("id", scoreId ?? "");
+    formData.append("id", scoreId ?? EMPTY_STRING);
     formData.append("score", file);
 
     setUploading(true);
@@ -79,7 +79,7 @@ export default function HymnScore() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}
