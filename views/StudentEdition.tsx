@@ -26,7 +26,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg4.webp";
 import "./StudentEdition.css";
-import { extractErrorMessage } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 type StudentForm = {
   id: string | null;
@@ -39,18 +39,18 @@ type StudentForm = {
 
 const emptyForm: StudentForm = {
   id: null,
-  loginAccount: "",
-  username: "",
-  password: "",
-  dateOfBirth: "",
-  email: "",
+  loginAccount: EMPTY_STRING,
+  username: EMPTY_STRING,
+  password: EMPTY_STRING,
+  dateOfBirth: EMPTY_STRING,
+  email: EMPTY_STRING,
 };
 
 const required = (v: string) =>
-  !!v && v.trim() !== "" ? "" : "上記の入力ボックスを空になってはいけません。";
+  !!v && v.trim() !== EMPTY_STRING ? EMPTY_STRING : "上記の入力ボックスを空になってはいけません。";
 
 const toDateInputValue = (src: string) => {
-  if (!src) return "";
+  if (!src) return EMPTY_STRING;
   if (/^\d{4}-\d{2}-\d{2}$/.test(src)) return src;
   const d = new Date(src);
   const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -66,11 +66,11 @@ export default function StudentEdition() {
   const userId = searchParams.get("userId");
   const [form, setForm] = useState<StudentForm>({ ...emptyForm, id: userId });
   const [errors, setErrors] = useState({
-    loginAccount: "",
-    username: "",
-    password: "",
-    dateOfBirth: "",
-    email: "",
+    loginAccount: EMPTY_STRING,
+    username: EMPTY_STRING,
+    password: EMPTY_STRING,
+    dateOfBirth: EMPTY_STRING,
+    email: EMPTY_STRING,
   });
   const [saving, setSaving] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -105,12 +105,12 @@ export default function StudentEdition() {
   }, []);
 
   const checkAccount = async () => {
-    setErrors((er) => ({ ...er, loginAccount: "" }));
+    setErrors((er) => ({ ...er, loginAccount: EMPTY_STRING }));
     const name = form.loginAccount.trim();
     if (!name) return;
     try {
       await api.get("/students/check-duplicated", {
-        params: { id: form.id ?? "", loginAccount: name },
+        params: { id: form.id ?? EMPTY_STRING, loginAccount: name },
       });
     } catch (e: unknown) {
       setErrors((er) => ({
@@ -157,11 +157,11 @@ export default function StudentEdition() {
 
   const onRestore = async () => {
     setErrors({
-      loginAccount: "",
-      username: "",
-      password: "",
-      dateOfBirth: "",
-      email: "",
+      loginAccount: EMPTY_STRING,
+      username: EMPTY_STRING,
+      password: EMPTY_STRING,
+      dateOfBirth: EMPTY_STRING,
+      email: EMPTY_STRING,
     });
     if (!form.id) {
       setForm({ ...emptyForm });
@@ -175,7 +175,7 @@ export default function StudentEdition() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt=EMPTY_STRING
           fill
           priority
           style={{ objectFit: "cover" }}

@@ -1,7 +1,12 @@
 "use client";
 
 // src/layouts/AdminLayout.tsx
-import { useState, useEffect, type KeyboardEvent, type MouseEvent } from "react";
+import {
+  useState,
+  useEffect,
+  type KeyboardEvent,
+  type MouseEvent,
+} from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -33,7 +38,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useAuthStore } from "@/stores/authStore";
 import { useFeedbackStore } from "@/stores/feedbackStore";
-import { DELAY_APOLOGY } from "@/constants";
+import { DELAY_APOLOGY, EMPTY_STRING } from "@/constants";
 import brandLogo from "@/assets/jerusalem-cross2.svg";
 
 const DRAWER_WIDTH = 256;
@@ -52,7 +57,7 @@ export default function AdminLayout({
   const toast = useFeedbackStore((s) => s.toast);
   const confirm = useFeedbackStore((s) => s.confirm);
 
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(EMPTY_STRING);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
   // 旧 router.tsx の RequireAuth 相当。ここで認証チェックを行う。
@@ -126,7 +131,7 @@ export default function AdminLayout({
 
   const goPersonal = () => {
     closeUserMenu();
-    router.push(`/personal?userId=${userId() ?? ""}`);
+    router.push(`/personal?userId=${userId() ?? EMPTY_STRING}`);
   };
 
   return (
@@ -201,7 +206,7 @@ export default function AdminLayout({
             <Box sx={{ position: "relative", width: 49, height: 49 }}>
               <Image
                 src={brandLogo}
-                alt=""
+                alt={EMPTY_STRING}
                 fill
                 style={{ objectFit: "cover" }}
               />
@@ -229,10 +234,7 @@ export default function AdminLayout({
               >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText
-                primary={item.title}
-                sx={{ flexGrow: 0 }}
-              />
+              <ListItemText primary={item.title} sx={{ flexGrow: 0 }} />
             </ListItemButton>
           ))}
         </List>

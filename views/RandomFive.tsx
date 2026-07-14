@@ -18,7 +18,7 @@ import api from "@/api/axios";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import bgImage from "@/assets/mainmenu-bg6.webp";
 import "./RandomFive.css";
-import { extractErrorMessage } from "@/constants";
+import { EMPTY_STRING, extractErrorMessage } from "@/constants";
 
 type Record = { id?: number; nameJp: string; nameKr: string; link: string };
 
@@ -26,7 +26,7 @@ export default function RandomFive() {
   const searchParams = useSearchParams();
   const toast = useFeedbackStore((s) => s.toast);
 
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(EMPTY_STRING);
   const [records, setRecords] = useState<Record[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -77,7 +77,7 @@ export default function RandomFive() {
       <Box sx={{ position: "fixed", inset: 0, zIndex: -1 }}>
         <Image
           src={bgImage}
-          alt=""
+          alt={EMPTY_STRING}
           fill
           priority
           style={{ objectFit: "cover" }}

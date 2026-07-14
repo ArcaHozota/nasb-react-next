@@ -1,5 +1,6 @@
 "use client";
 
+import { EMPTY_STRING } from "@/constants";
 // src/stores/feedbackStore.ts
 import { create } from "zustand";
 
@@ -25,8 +26,8 @@ type FeedbackState = {
 };
 
 export const useFeedbackStore = create<FeedbackState>((set, get) => ({
-  snackbar: { show: false, text: "" },
-  dialog: { show: false, title: "確認", text: "", resolve: null },
+  snackbar: { show: false, text: EMPTY_STRING },
+  dialog: { show: false, title: "確認", text: EMPTY_STRING, resolve: null },
 
   // 旧 layer.msg(トースト)相当
   toast: (text) => {
@@ -46,6 +47,8 @@ export const useFeedbackStore = create<FeedbackState>((set, get) => ({
   answer: (ok) => {
     const { dialog } = get();
     dialog.resolve?.(ok);
-    set({ dialog: { show: false, title: "確認", text: "", resolve: null } });
+    set({
+      dialog: { show: false, title: "確認", text: EMPTY_STRING, resolve: null },
+    });
   },
 }));

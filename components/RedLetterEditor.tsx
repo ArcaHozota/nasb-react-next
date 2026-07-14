@@ -9,6 +9,7 @@ import {
   useRef,
 } from "react";
 import { Box, FormHelperText } from "@mui/material";
+import { EMPTY_STRING } from "@/constants";
 
 type Segment = { text: string; red: boolean };
 
@@ -29,7 +30,7 @@ function parseToSegments(raw: string): Segment[] {
   if (lastIndex < raw.length) {
     segments.push({ text: raw.slice(lastIndex), red: false });
   }
-  if (segments.length === 0) segments.push({ text: "", red: false });
+  if (segments.length === 0) segments.push({ text: EMPTY_STRING, red: false });
   return segments;
 }
 
@@ -41,11 +42,11 @@ function domToSegments(container: HTMLElement): Segment[] {
   const segments: Segment[] = [];
   container.childNodes.forEach((node) => {
     if (node.nodeType === Node.TEXT_NODE) {
-      segments.push({ text: node.textContent ?? "", red: false });
+      segments.push({ text: node.textContent ?? EMPTY_STRING, red: false });
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       const el = node as HTMLElement;
       segments.push({
-        text: el.textContent ?? "",
+        text: el.textContent ?? EMPTY_STRING,
         red: el.classList.contains("red-letter"),
       });
     }
@@ -54,7 +55,7 @@ function domToSegments(container: HTMLElement): Segment[] {
 }
 
 function renderSegments(container: HTMLElement, segments: Segment[]) {
-  container.innerHTML = "";
+  container.innerHTML = EMPTY_STRING;
   segments.forEach((seg) => {
     if (seg.red) {
       const span = document.createElement("span");
@@ -180,9 +181,7 @@ export const RedLetterEditor = forwardRef<RedLetterEditorHandle, Props>(
         const startSpan = findRedLetterAncestor(range.startContainer, el);
         const endSpan = findRedLetterAncestor(range.endContainer, el);
         if (startSpan && startSpan === endSpan) {
-          const textNode = document.createTextNode(
-            startSpan.textContent ?? "",
-          );
+          const textNode = document.createTextNode(startSpan.textContent ?? "");
           startSpan.parentNode?.replaceChild(textNode, startSpan);
           const newRange = document.createRange();
           newRange.setStart(textNode, textNode.length);

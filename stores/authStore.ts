@@ -3,6 +3,7 @@
 // src/stores/authStore.ts
 import { create } from "zustand";
 import api from "@/api/axios";
+import { EMPTY_STRING } from "@/constants";
 
 type User = {
   id: number;
@@ -31,7 +32,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   // Pinia の getters 相当。Zustand では関数として呼ぶ形にする
   isLoggedIn: () => !!get().user,
-  username: () => get().user?.username ?? "",
+  username: () => get().user?.username ?? EMPTY_STRING,
   userId: () => get().user?.id ?? null,
   hasRole: (role) => get().user?.roles?.includes(role) ?? false,
 

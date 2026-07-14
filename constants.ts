@@ -5,7 +5,9 @@ export const EMPTY_STRING = "";
 
 export const utf8ToBase64 = (str: string): string => {
   const bytes = new TextEncoder().encode(str);
-  const binString = Array.from(bytes, (b) => String.fromCharCode(b)).join("");
+  const binString = Array.from(bytes, (b) => String.fromCharCode(b)).join(
+    EMPTY_STRING,
+  );
   return btoa(binString);
 };
 
