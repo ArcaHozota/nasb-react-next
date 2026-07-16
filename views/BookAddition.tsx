@@ -120,12 +120,11 @@ export default function BookAddition() {
       toast("入力情報不正");
       return;
     }
-
     setSaving(true);
     try {
       const { data } = await api.post("/books/info-storage", {
         chapterId,
-        id: phraseId.trim(),
+        id: Number(phraseId.trim()),
         textEn: textEn.trim(),
         textJp: textJp.trim(),
       });
