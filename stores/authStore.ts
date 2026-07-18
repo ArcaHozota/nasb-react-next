@@ -7,7 +7,7 @@ import { EMPTY_STRING } from "@/constants";
 import axios from "axios";
 
 type User = {
-  id: number;
+  id: string;
   username: string;
   // 【要確認】Scala側 CommonRoutes.scala の "me" ハンドラは現状
   //   Map("id" -> session.userId.toString, "username" -> session.userName)
@@ -22,7 +22,7 @@ type AuthState = {
   user: User;
   isLoggedIn: () => boolean;
   username: () => string;
-  userId: () => number | null;
+  userId: () => string | null;
   hasRole: (role: string) => boolean;
   fetchMe: () => Promise<User>;
   login: (username: string, password: string) => Promise<void>;
@@ -34,16 +34,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   isLoggedIn: () => !!get().user,
   username: () => get().user?.username ?? EMPTY_STRING,
-  userId: () => get().user?.id ?? null,
+  userId: () => get().user?.id ?? EMPTY_STRING,
   hasRole: (role) => get().user?.roles?.includes(role) ?? false,
 
   fetchMe: async () => {
     try {
       // Scala側は { id: string, username: string } を返す(roles無し)。
-      // id は文字列で返ってくるので number へ変換して保持する。
       const { data } = await api.get<{ id: string; username: string }>("/me");
       const user: User = {
-        id: Number(data.id),
+        id: data.id,
         username: data.username,
         roles: [],
       };
