@@ -1,7 +1,7 @@
 "use client";
 
 // src/views/LoginView.tsx
-import { useState, useEffect, type KeyboardEvent } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -21,17 +21,11 @@ import { EMPTY_STRING } from "@/constants";
 export default function LoginView() {
   const router = useRouter();
   const login = useAuthStore((s) => s.login);
-  const initCsrf = useAuthStore((s) => s.initCsrf);
 
   const [username, setUsername] = useState(EMPTY_STRING);
   const [password, setPassword] = useState(EMPTY_STRING);
   const [error, setError] = useState(EMPTY_STRING);
   const [loading, setLoading] = useState(false);
-
-  // 旧 onMounted(() => auth.initCsrf())
-  useEffect(() => {
-    initCsrf();
-  }, [initCsrf]);
 
   const onLogin = async () => {
     setError(EMPTY_STRING);
