@@ -9,13 +9,17 @@ import axios from "axios";
 type User = {
   id: number;
   username: string;
+  // 【要確認】Scala側 CommonRoutes.scala の "me" ハンドラは現状
+  //   Map("id" -> session.userId.toString, "username" -> session.userName)
+  // しか返しておらず、authorities/roles は含まれていない。
+  // そのため roles は常に空配列になり、hasRole(...) は常に false を返す。
+  // 画面のロール別出し分けが必要なら、Scala側の /me ハンドラに
+  // session.authorities (もしくは role) を含めてもらう必要がある。
   roles: string[];
 } | null;
 
 type AuthState = {
   user: User;
-  csrfToken: string | null; // add this
-  csrfHeaderName: string; // add this
   isLoggedIn: () => boolean;
   username: () => string;
   userId: () => number | null;
@@ -23,17 +27,11 @@ type AuthState = {
   fetchMe: () => Promise<User>;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  initCsrf: () => Promise<void>;
 };
-
-let csrfInflight: Promise<void> | null = null;
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
-  csrfToken: null,
-  csrfHeaderName: "X-XSRF-TOKEN", // default Spring header name
 
-  // Pinia の getters 相当。Zustand では関数として呼ぶ形にする
   isLoggedIn: () => !!get().user,
   username: () => get().user?.username ?? EMPTY_STRING,
   userId: () => get().user?.id ?? null,
@@ -41,9 +39,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   fetchMe: async () => {
     try {
-      const { data } = await api.get("/me");
-      set({ user: data });
-      return data;
+      // Scala側は { id: string, username: string } を返す(roles無し)。
+      // id は文字列で返ってくるので number へ変換して保持する。
+      const { data } = await api.get<{ id: string; username: string }>("/me");
+      const user: User = {
+        id: Number(data.id),
+        username: data.username,
+        roles: [],
+      };
+      set({ user });
+      return user;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
         set({ user: null });
@@ -55,30 +60,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: async () => {
     await api.post("/logout");
-    set({ user: null, csrfToken: null });
+    set({ user: null });
   },
 
   login: async (username, password) => {
-    await get().initCsrf(); // always fetch a fresh token right before login
+    // 【変更点】CSRF関連の initCsrf() 呼び出しを撤去した(/csrf自体が存在しないため)。
+    // Scala側の login ハンドラは req.body.asString を自前でパースしており
+    // (parseFormBody)、application/x-www-form-urlencoded 形式の
+    // "username=...&password=..." を期待している。axiosはURLSearchParamsを
+    //渡すと自動でこのContent-Typeを設定するため、ここは変更不要。
     const body = new URLSearchParams({ username, password });
-    const { data } = await api.post("/login", body);
+    const { data } = await api.post<{ message?: string }>("/login", body);
     if (data?.message) {
       localStorage.setItem("redirectMessage", data.message);
     }
-    await get().initCsrf(); // Spring may rotate session on auth; refresh again after
     await get().fetchMe();
-  },
-
-  initCsrf: async () => {
-    if (csrfInflight) return csrfInflight;
-    csrfInflight = (async () => {
-      const { data } = await api.get("/csrf");
-      set({ csrfToken: data.token, csrfHeaderName: data.headerName });
-    })();
-    try {
-      await csrfInflight;
-    } finally {
-      csrfInflight = null;
-    }
   },
 }));

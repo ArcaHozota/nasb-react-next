@@ -1,40 +1,20 @@
 // src/api/axios.ts
 import axios from "axios";
-import { useAuthStore } from "@/stores/authStore";
 
 const api = axios.create({
   baseURL: "/api",
   withCredentials: true,
 });
 
-// CSRFトークンをリクエストヘッダーへ付与(通常パス)
-api.interceptors.request.use((config) => {
-  const method = config.method?.toLowerCase();
-  if (method && ["post", "put", "delete", "patch"].includes(method)) {
-    const { csrfToken, csrfHeaderName } = useAuthStore.getState();
-    if (csrfToken) {
-      config.headers[csrfHeaderName] = csrfToken;
-    }
-  }
-  return config;
-});
-
-// CSRFトークン失効時のリトライ(EC2本番環境対応)
-api.interceptors.response.use(
-  (res) => res,
-  async (err) => {
-    if (err.response?.status === 403 && !err.config._retried) {
-      err.config._retried = true;
-      await useAuthStore.getState().initCsrf();
-      const { csrfToken, csrfHeaderName } = useAuthStore.getState();
-      err.config.headers[csrfHeaderName] = csrfToken;
-      return api.request(err.config);
-    }
-    return Promise.reject(err);
-  },
-);
-
-// 未認証(401)をログイン画面へリダイレクト
+// 【変更点】CSRFトークンの付与・失効時リトライを撤去した。
+// 理由: 実際のScala/ZIO側 CommonRoutes.scala には /csrf エンドポイントが
+// 存在せず、CSRF対策は SESSION_ID Cookie を
+//   isHttpOnly = true, isSecure = true, sameSite = Cookie.SameSite.Strict
+// として発行することで代替している。SameSite=Strict は他サイト起点の
+// リクエストへ一切Cookieを付与しないため、Spring版で行っていた
+// X-XSRF-TOKENのdouble-submit-cookie方式は不要かつ対応するエンドポイントも無い。
+//
+// 未認証(401)はそのままログイン画面へのリダイレクトに使う。
 api.interceptors.response.use(
   (res) => res,
   (err) => {
