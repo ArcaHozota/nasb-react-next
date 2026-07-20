@@ -44,7 +44,7 @@ export default function BookAddition() {
   const [chapters, setChapters] = useState<BookOrChapter[]>([]);
   const [bookId, setBookId] = useState<number | string>(EMPTY_STRING);
   const [chapterId, setChapterId] = useState<number | string>(EMPTY_STRING);
-  const [phraseId, setPhraseId] = useState(EMPTY_STRING);
+  const [verseId, setPhraseId] = useState(EMPTY_STRING);
   const [textEn, setTextEn] = useState(EMPTY_STRING);
   const [textJp, setTextJp] = useState(EMPTY_STRING);
   const [chapterLoading, setChapterLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function BookAddition() {
   const [errors, setErrors] = useState({
     textEn: false,
     textJp: false,
-    phraseId: false,
+    verseId: false,
   });
   // state群のそばに追加
   // refをTextField用からEditor用に変更
@@ -113,7 +113,7 @@ export default function BookAddition() {
     const nextErrors = {
       textEn: !required(textEn),
       textJp: !required(textJp),
-      phraseId: !required(phraseId),
+      verseId: !required(verseId),
     };
     setErrors(nextErrors);
     if (Object.values(nextErrors).some(Boolean)) {
@@ -124,7 +124,7 @@ export default function BookAddition() {
     try {
       const { data } = await api.post("/books/info-storage", {
         chapterId,
-        id: Number(phraseId.trim()),
+        id: verseId.trim(),
         textEn: textEn.trim(),
         textJp: textJp.trim(),
       });
@@ -132,7 +132,7 @@ export default function BookAddition() {
       setPhraseId(EMPTY_STRING);
       setTextEn(EMPTY_STRING);
       setTextJp(EMPTY_STRING);
-      setErrors({ textEn: false, textJp: false, phraseId: false });
+      setErrors({ textEn: false, textJp: false, verseId: false });
     } catch (e: unknown) {
       toast(extractErrorMessage(e, "保存に失敗しました"));
     } finally {
@@ -273,15 +273,15 @@ export default function BookAddition() {
             <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 fullWidth
-                value={phraseId}
+                value={verseId}
                 onChange={(e) => handlePhraseIdChange(e.target.value)}
                 placeholder="節の数を入力しましょう"
                 variant="outlined"
                 size="small"
                 className="noto-serif"
-                error={errors.phraseId}
+                error={errors.verseId}
                 helperText={
-                  errors.phraseId
+                  errors.verseId
                     ? "上記の入力ボックスを空になってはいけません。"
                     : EMPTY_STRING
                 }
