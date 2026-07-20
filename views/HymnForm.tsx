@@ -156,13 +156,11 @@ export default function HymnForm() {
       toast("入力情報不正");
       return;
     }
-
     const uid = userId();
     if (!uid) {
       toast("ログイン情報の取得に失敗しました。再度ログインしてください。");
       return;
     }
-
     setSaving(true);
     const payload = {
       nameJp: form.nameJp.trim(),
